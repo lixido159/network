@@ -32,8 +32,14 @@ public class CommonClientCallback implements Callback {
 
     @Override
     public void onResponse(final Call call, Response response) throws IOException {
-        String json=response.body().string();
-        commonCallback.succeed(jsonParse.parse(json));
+        final String json=response.body().string();
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                commonCallback.succeed(jsonParse.parse(json));
+            }
+        });
+
     }
 
 
