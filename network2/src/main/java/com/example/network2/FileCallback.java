@@ -4,37 +4,38 @@ import android.os.Handler;
 import android.os.Looper;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-public class CommonClientCallback implements Callback {
+public class FileCallback implements Callback {
     private CommonCallback commonCallback;
     private Handler handler=new Handler(Looper.getMainLooper());
-    JsonParse jsonParse;
 
-    public CommonClientCallback(JsonParse jsonParse,CommonCallback commonCallback) {
+    public FileCallback(CommonCallback commonCallback) {
         this.commonCallback = commonCallback;
-        this.jsonParse=jsonParse;
     }
 
     @Override
     public void onFailure(Call call, final IOException e) {
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                commonCallback.networkError(e);
-            }
-        });
-
+      handler.post(new Runnable() {
+          @Override
+          public void run() {
+              commonCallback.networkError(e);
+          }
+      });
     }
 
     @Override
-    public void onResponse(final Call call, Response response) throws IOException {
-        String json=response.body().string();
-        commonCallback.succeed(jsonParse.parse(json));
+    public void onResponse(Call call, Response response) throws IOException {
+        final Object file=response.body().bytes();
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                commonCallback.succeed(file);
+            }
+        });
     }
-
-
 }
