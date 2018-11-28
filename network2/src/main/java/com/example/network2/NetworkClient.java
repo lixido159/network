@@ -1,6 +1,7 @@
 package com.example.network2;
 
 import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 
@@ -20,9 +21,9 @@ public class NetworkClient{
     }
 
 
-    public void enqueue(Request request,CommonClientCallback commonCallback) {
+    public void enqueue(Request request, Callback callback) {
         Call call = mOkHttpClient.newCall(request);
-        call.enqueue(commonCallback);
+        call.enqueue(callback);
     }
 
 
