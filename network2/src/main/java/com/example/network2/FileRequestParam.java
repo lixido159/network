@@ -44,6 +44,15 @@ public class FileRequestParam {
         }
         return this;
     }
+    public FileRequestParam setFile(byte[] bytes,String paramName) {
+        try {
+            requestBody=RequestBody.create(null,bytes);
+            this.fileName=paramName;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return this;
+    }
     public Request build(){
         MultipartBody.Builder builder=new MultipartBody.Builder();
         builder.setType(MultipartBody.FORM);
